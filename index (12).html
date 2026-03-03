@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ICT Helpdesk — Level 1 Assessment</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+  /* ============================================================
+     ⚙️  CONFIGURATION
+     Replace the value below with your Make.com webhook URL.
+     See README or ask your admin for setup instructions.
+     ============================================================ */
+
+  :root {
+    --bg:      #070b12;
+    --card:    #0d1420;
+    --border:  #1a2e48;
+    --blue:    #2563eb;
+    --blue2:   #1d4ed8;
+    --cyan:    #06b6d4;
+    --green:   #22c55e;
+    --yellow:  #f59e0b;
+    --red:     #ef4444;
+    --text:    #e2e8f0;
+    --muted:   #64748b;
+    --dim:     #1e293b;
+    --mono:    'JetBrains Mono', monospace;
+    --sans:    'Sora', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 16px 80px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: -180px; left: 50%;
+    transform: translateX(-50%);
+    width: 800px; height: 500px;
+    background: radial-gradient(ellipse, rgba(37,99,235,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .wrap { max-width: 680px; width: 100%; position: relative; }
+
+  /* CARD */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 38px;
+    box-shadow: 0 0 80px rgba(37,99,235,0.05), 0 24px 48px rgba(0,0,0,0.55);
+    animation: fadeUp 0.35s ease forwards;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* BADGE */
+  .badge {
+    display: inline-block;
+    font-family: var(--mono); font-size: 10px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 5px;
+  }
+  .b-blue   { background: rgba(37,99,235,0.15);  color: #60a5fa; border: 1px solid rgba(37,99,235,0.3); }
+  .b-green  { background: rgba(34,197,94,0.12);  color: #86efac; border: 1px solid rgba(34,197,94,0.3); }
+  .b-yellow { background: rgba(245,158,11,0.12); color: #fcd34d; border: 1px solid rgba(245,158,11,0.3); }
+  .b-red    { background: rgba(239,68,68,0.12);  color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); }
+
+  /* PROGRESS */
+  .prog-track { background: var(--dim); border-radius: 4px; height: 4px; overflow: hidden; margin-bottom: 26px; }
+  .prog-fill  { height: 100%; background: linear-gradient(90deg, var(--blue), var(--cyan)); border-radius: 4px; transition: width 0.4s ease; }
+
+  /* INPUTS */
+  .field { margin-bottom: 20px; }
+  label  { display: block; font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px; }
+  input[type=text] {
+    width: 100%; background: rgba(255,255,255,0.04);
+    border: 1.5px solid var(--border); border-radius: 10px;
+    padding: 13px 16px; color: var(--text);
+    font-family: var(--sans); font-size: 15px; outline: none;
+    transition: border-color 0.2s;
+  }
+  input[type=text]:focus { border-color: var(--blue); }
+
+  /* BUTTONS */
+  .btn {
+    display: inline-block; padding: 13px 28px;
+    border: none; border-radius: 10px;
+    font-family: var(--mono); font-size: 12px; font-weight: 700;
+    letter-spacing: 0.05em; text-transform: uppercase;
+    cursor: pointer; transition: opacity 0.15s, transform 0.12s;
+  }
+  .btn:hover  { opacity: 0.85; transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+  .btn-primary { background: linear-gradient(135deg, var(--blue2), var(--blue)); color: #fff; }
+  .btn-green   { background: linear-gradient(135deg, #15803d, var(--green)); color: #fff; }
+  .btn-ghost   { background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--muted); }
+  .btn-full    { width: 100%; text-align: center; display: block; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  /* ANSWER OPTIONS */
+  .option {
+    width: 100%; text-align: left; display: block;
+    background: rgba(255,255,255,0.025);
+    border: 1.5px solid var(--border); border-radius: 10px;
+    padding: 14px 18px; color: #cbd5e1;
+    font-family: var(--sans); font-size: 14px; line-height: 1.55;
+    cursor: pointer; margin-bottom: 10px;
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+  }
+  .option:hover:not(.selected):not(:disabled) {
+    border-color: rgba(37,99,235,0.6);
+    background: rgba(37,99,235,0.07);
+  }
+  .option.selected {
+    border-color: var(--blue);
+    background: rgba(37,99,235,0.15);
+    color: #bfdbfe;
+  }
+  .option:disabled { cursor: default; }
+
+  /* RESULTS */
+  .score-num { font-family: var(--mono); font-size: 74px; font-weight: 800; line-height: 1; }
+
+  .cat-row  { margin-bottom: 13px; }
+  .cat-meta { display: flex; justify-content: space-between; font-size: 12px; color: #94a3b8; margin-bottom: 5px; }
+  .bar-track { background: var(--dim); border-radius: 4px; height: 7px; overflow: hidden; }
+  .bar-fill  { height: 100%; border-radius: 4px; transition: width 0.7s ease; }
+
+  /* SUBMIT BOX */
+  .submit-box {
+    border-radius: 12px; padding: 22px;
+    border: 1px solid rgba(37,99,235,0.22);
+    background: rgba(37,99,235,0.05);
+    margin-bottom: 18px;
+  }
+  .submit-box.done {
+    border-color: rgba(34,197,94,0.3);
+    background: rgba(34,197,94,0.06);
+    text-align: center;
+  }
+
+  /* MISC */
+  .row  { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+  .gap  { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .err  { color: var(--red); font-family: var(--mono); font-size: 11px; margin-top: 6px; }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+  .tc   { text-align: center; }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ═══════════════ INTRO ═══════════════ -->
+  <div id="screen-intro" class="card">
+    <div class="tc" style="margin-bottom:30px">
+      <span class="badge b-blue">ICT Helpdesk · Level 1</span>
+      <h1 style="font-family:var(--mono);font-size:26px;font-weight:800;margin:14px 0 8px;letter-spacing:-0.02em">
+        Knowledge Assessment
+      </h1>
+      <p style="color:var(--muted);font-size:13px;line-height:1.8">
+        30 questions · Software, Hardware &amp; Security<br>
+        Choose your answer and move on — no peeking! 👀<br>
+        Your results are submitted at the end.
+      </p>
+    </div>
+
+    <div class="field">
+      <label>Your Full Name</label>
+      <input type="text" id="staff-name" placeholder="e.g. Alex Johnson" onkeydown="if(event.key==='Enter')startQuiz()"/>
+      <div class="err hidden" id="name-err">⚠ Please enter your name before starting.</div>
+    </div>
+
+    <div class="gap" style="margin-bottom:26px;justify-content:center">
+      <span class="badge b-blue">Office 365</span>
+      <span class="badge b-blue">SEQTA</span>
+      <span class="badge b-blue">Active Directory</span>
+      <span class="badge b-blue">Inner Range</span>
+      <span class="badge b-blue">3CX</span>
+      <span class="badge b-blue">Vivi</span>
+      <span class="badge b-blue">Assure</span>
+      <span class="badge b-blue">Apple Classroom</span>
+      <span class="badge b-blue">JAMF</span>
+      <span class="badge b-blue">Security</span>
+      <span class="badge b-blue">Hardware</span>
+    </div>
+
+    <button class="btn btn-primary btn-full" onclick="startQuiz()">Begin Assessment →</button>
+  </div>
+
+  <!-- ═══════════════ QUIZ ═══════════════ -->
+  <div id="screen-quiz" class="card hidden">
+    <div class="prog-track"><div class="prog-fill" id="prog" style="width:0%"></div></div>
+
+    <div class="row">
+      <span class="badge b-blue" id="q-cat"></span>
+      <div class="gap">
+        <span class="badge" id="q-diff"></span>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--muted)" id="q-num"></span>
+      </div>
+    </div>
+
+    <p id="q-text" style="font-size:15px;line-height:1.75;margin-bottom:24px"></p>
+    <div id="q-opts"></div>
+
+    <div style="text-align:right;margin-top:20px">
+      <button class="btn btn-primary hidden" id="btn-next" onclick="nextQ()">Next →</button>
+      <button class="btn btn-primary hidden" id="btn-finish" onclick="showResults()">View Results →</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════ RESULTS ═══════════════ -->
+  <div id="screen-results" class="card hidden">
+    <div class="tc" style="margin-bottom:30px">
+      <div style="font-size:13px;color:var(--muted);margin-bottom:8px" id="res-name"></div>
+      <div class="score-num" id="res-pct"></div>
+      <div style="margin:12px 0"><span class="badge" id="res-grade"></span></div>
+      <p style="color:var(--muted);font-size:13px" id="res-frac"></p>
+    </div>
+
+    <div style="margin-bottom:26px">
+      <div style="font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin-bottom:16px">
+        Category Breakdown
+      </div>
+      <div id="cat-bars"></div>
+    </div>
+
+    <hr class="divider"/>
+
+    <!-- Submit -->
+    <div class="submit-box" id="submit-box">
+      <p style="color:#93c5fd;font-size:13px;line-height:1.65;margin-bottom:16px">
+        <strong style="font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.1em">Submit Your Results</strong><br>
+        Click below to log your score to the team Notion database.
+      </p>
+      <button class="btn btn-green btn-full" id="btn-submit" onclick="submitResults()">
+        📊 Submit to Notion
+      </button>
+      <div class="err hidden" id="submit-err"></div>
+    </div>
+
+    <div class="tc" style="margin-top:4px">
+      <button class="btn btn-ghost" onclick="restart()">← Restart</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ============================================================
+// ⚙️  PASTE YOUR MAKE.COM WEBHOOK URL HERE
+// ============================================================
+const WEBHOOK = "YOUR_MAKE_WEBHOOK_URL";
+// ============================================================
+
+const QUESTIONS = [
+  { id:1,  cat:"Office 365",      diff:"Easy",
+    q:"A user says they cannot access their Outlook email on a new device. They are signed in but getting 'Account not found'. What is the most likely first step?",
+    opts:["Reinstall Office 365","Verify the user's licence is assigned in Microsoft 365 Admin Centre","Reset their password","Clear browser cache"], ans:1 },
+
+  { id:2,  cat:"Office 365",      diff:"Medium",
+    q:"A teacher reports their shared OneDrive folder is no longer syncing on their laptop. Which application manages OneDrive sync on Windows?",
+    opts:["SharePoint Desktop App","OneDrive Sync Client (OneDrive.exe)","Windows Explorer only","Teams File Manager"], ans:1 },
+
+  { id:3,  cat:"Office 365",      diff:"Hard",
+    q:"A staff member has left the organisation. Which action is best practice to retain their emails while preventing login?",
+    opts:["Delete the account immediately","Convert the mailbox to a Shared Mailbox and block sign-in","Change the password and share it with their manager","Forward emails to another staff member's inbox"], ans:1 },
+
+  { id:4,  cat:"SEQTA",           diff:"Easy",
+    q:"A teacher can't log into SEQTA. They say they have never had an issue before. What is your first troubleshooting step?",
+    opts:["Create a new SEQTA account for them","Check if SEQTA is accessible from another browser or device","Rebuild their profile in Active Directory","Contact SEQTA support immediately"], ans:1 },
+
+  { id:5,  cat:"SEQTA",           diff:"Medium",
+    q:"SEQTA uses which authentication method that is commonly linked to Active Directory / LDAP?",
+    opts:["OAuth 2.0 only","Single Sign-On (SSO) via LDAP/AD integration","Local SEQTA database accounts only","SAML via Google Workspace"], ans:1 },
+
+  { id:6,  cat:"Active Directory", diff:"Easy",
+    q:"A user is locked out of their account after multiple failed login attempts. Which AD tool do you use to unlock it?",
+    opts:["Group Policy Management Console","Active Directory Users and Computers (ADUC)","DNS Manager","Event Viewer"], ans:1 },
+
+  { id:7,  cat:"Active Directory", diff:"Medium",
+    q:"You need to add a new staff laptop to the domain. What is required for the machine to join Active Directory?",
+    opts:["The machine must be on the same physical network switch","The machine must be able to reach a Domain Controller and you need admin credentials with join rights","The machine needs a static IP address first","You must contact Microsoft support to authorise the join"], ans:1 },
+
+  { id:8,  cat:"Active Directory", diff:"Hard",
+    q:"A user reports they can log in but cannot access a shared drive they had access to yesterday. No changes were made to their account. What is the most likely cause?",
+    opts:["Their password expired","They were removed from the security group that grants access to the share","The file server needs a reboot","Their account is in the wrong OU"], ans:1 },
+
+  { id:9,  cat:"Inner Range",      diff:"Easy",
+    q:"A staff member's door access card stops working. What is the first thing you should check in the Integriti system?",
+    opts:["Whether the door controller needs a firmware update","Whether the card is enrolled and the user's access profile is active and not expired","Whether the CCTV system is online","Whether the door hardware needs replacing"], ans:1 },
+
+  { id:10, cat:"Inner Range",      diff:"Medium",
+    q:"MiFare cards use which frequency for RFID communication?",
+    opts:["125 kHz (Low Frequency)","13.56 MHz (High Frequency)","2.4 GHz (Microwave)","433 MHz (UHF)"], ans:1 },
+
+  { id:11, cat:"Inner Range",      diff:"Hard",
+    q:"A new MiFare card is presented to a reader but access is denied even though the card was just programmed. What should you verify?",
+    opts:["The card colour matches the reader colour","The card's site code, facility code, and card number are correctly programmed and match what is enrolled in Integriti","The reader needs to be replaced","The door schedule is set to 'always locked'"], ans:1 },
+
+  { id:12, cat:"3CX",              diff:"Easy",
+    q:"A staff member says they are not receiving calls on their 3CX softphone app. The app is open on their PC. What do you check first?",
+    opts:["Whether the phone line has been cancelled","Whether the extension is registered — check the 3CX Management Console for extension status","Whether their monitor is the right resolution","Whether Office 365 is running"], ans:1 },
+
+  { id:13, cat:"3CX",              diff:"Medium",
+    q:"A user's 3CX app shows 'Not Registered'. Which of these is NOT a likely cause?",
+    opts:["Incorrect extension credentials","The 3CX server is unreachable from their network","Their laptop's screen brightness is too low","Firewall blocking SIP/WebRTC ports"], ans:2 },
+
+  { id:14, cat:"Vivi",             diff:"Easy",
+    q:"A teacher says the Vivi box in their classroom isn't showing on their device's Vivi app. What is the most common first cause to check?",
+    opts:["The classroom lights need replacing","Both the Vivi box and the teacher's device must be on the same network/VLAN","The TV resolution needs adjusting","The teacher's AD password needs resetting"], ans:1 },
+
+  { id:15, cat:"Vivi",             diff:"Medium",
+    q:"A Vivi box is showing a solid red light. What does this typically indicate?",
+    opts:["It is in screensaver mode","There is a network or boot error — the device has not successfully connected","It is casting a presentation","The HDMI cable needs replacing"], ans:1 },
+
+  { id:16, cat:"Assure",           diff:"Easy",
+    q:"A user reports slow internet. Using Assure (Network Activity Monitor), what would you look for to investigate?",
+    opts:["Whether the user has updated Windows recently","Unusual bandwidth consumption, top talkers, or interface utilisation spikes on their segment","Whether Teams is open","The model of their laptop"], ans:1 },
+
+  { id:17, cat:"Assure",           diff:"Hard",
+    q:"Assure alerts you to a device generating an unusually high volume of outbound traffic at 2am. What is the most concerning interpretation?",
+    opts:["Someone is working late","The device may be compromised (malware, botnet activity, or data exfiltration) and should be isolated for investigation","Windows Update is running","A backup job is running normally"], ans:1 },
+
+  { id:18, cat:"Apple Classroom",  diff:"Easy",
+    q:"A teacher says they cannot see student iPads in Apple Classroom. What is the most common cause?",
+    opts:["The iPads need new cases","The teacher and students must be on the same Wi-Fi network and Bluetooth must be enabled on all devices","Apple Classroom needs to be reinstalled on the teacher's Mac","Students' iPads need a passcode"], ans:1 },
+
+  { id:19, cat:"Apple Classroom",  diff:"Medium",
+    q:"A student's iPad is supervised. What does 'supervised' mean in an MDM context?",
+    opts:["A teacher is physically watching the student","The device is enrolled in an MDM like JAMF and has full management control, allowing restrictions not available on unsupervised devices","The device has parental controls turned on manually","The device has Find My disabled"], ans:1 },
+
+  { id:20, cat:"JAMF",             diff:"Easy",
+    q:"A teacher's MacBook is not receiving a newly pushed app via JAMF. What is the first step?",
+    opts:["Reimage the MacBook","Check JAMF Pro to confirm the device is enrolled, last check-in time, and whether the policy has the correct scope","Contact Apple Support","Manually download the app from the App Store"], ans:1 },
+
+  { id:21, cat:"JAMF",             diff:"Medium",
+    q:"A device appears in JAMF but shows 'Unmanaged'. What does this mean?",
+    opts:["The device is broken","The MDM profile has been removed from the device — it is enrolled in JAMF's inventory but no longer managed by it","The device needs a software update","The device is offline"], ans:1 },
+
+  { id:22, cat:"JAMF",             diff:"Hard",
+    q:"You need to remotely lock and send a 6-digit PIN to a lost MacBook. Which JAMF feature do you use?",
+    opts:["Remote Desktop","Remote Lock (MDM Command) via JAMF Pro device record","JAMF Connect","FileVault Recovery Key"], ans:1 },
+
+  { id:23, cat:"Security",         diff:"Easy",
+    q:"A staff member receives an email asking them to urgently click a link and enter their Microsoft 365 credentials. What type of attack is this?",
+    opts:["Ransomware","Phishing","DDoS","SQL Injection"], ans:1 },
+
+  { id:24, cat:"Security",         diff:"Medium",
+    q:"A user tells you they have reused the same password across their school Microsoft account and a personal website. Why is this a significant risk?",
+    opts:["It uses more memory on their PC","If the personal website is breached, attackers can use credential stuffing to access their school account","Microsoft requires unique passwords by default","It will cause their account to auto-lock"], ans:1 },
+
+  { id:25, cat:"Security",         diff:"Medium",
+    q:"You discover a USB drive left in a common area. What should you do?",
+    opts:["Plug it into your PC to see who it belongs to","Hand it to lost property and do NOT plug it into any school device — USB drives can carry malware","Format it and reuse it","Leave it where it is"], ans:1 },
+
+  { id:26, cat:"Security",         diff:"Hard",
+    q:"MFA has been enabled for all M365 accounts. A user still gets compromised. Which attack bypassed MFA?",
+    opts:["Brute force password attack","Adversary-in-the-Middle (AiTM) phishing using a reverse proxy to steal session tokens","Keylogger on a public PC","Shoulder surfing"], ans:1 },
+
+  { id:27, cat:"Hardware",         diff:"Easy",
+    q:"A Lenovo ThinkPad won't turn on but shows a charging LED when plugged in. What is your first hardware step?",
+    opts:["Replace the motherboard","Hold the power button for 30 seconds (drain residual power), then attempt to boot","Order a replacement laptop immediately","Remove and reinstall Windows"], ans:1 },
+
+  { id:28, cat:"Hardware",         diff:"Medium",
+    q:"A ThinkPad screen is flickering. The external monitor via USB-C dock works fine. What does this isolate the fault to?",
+    opts:["The GPU is faulty","The internal display, display cable, or lid hinge connection — not the GPU or software","Windows needs reinstalling","The dock's drivers are causing it"], ans:1 },
+
+  { id:29, cat:"Hardware",         diff:"Hard",
+    q:"A ThinkPad is displaying 'Fan Error' on boot and shuts down. What is the correct response?",
+    opts:["The SSD is failing — replace it","The CPU fan is failing or not spinning — the system is protecting itself from thermal damage. The fan needs cleaning or replacing.","This is a Windows error — reinstall the OS","The BIOS needs updating"], ans:1 },
+
+  { id:30, cat:"Hardware",         diff:"Medium",
+    q:"An iPad is stuck in Recovery Mode (showing the iTunes/Finder cable logo). What is the correct procedure?",
+    opts:["Leave it for 24 hours","Connect to a Mac running Finder and choose Update first — only Restore if Update fails, as Restore will erase all data","Throw it away","Force restart by pressing volume up, volume down, then holding power"], ans:1 },
+];
+
+const DIFF_CLASS = { Easy:"b-green", Medium:"b-yellow", Hard:"b-red" };
+const CATS = [...new Set(QUESTIONS.map(q => q.cat))];
+
+let current = 0, answers = [], staffName = "", selectedIdx = null;
+
+function show(id) {
+  ["screen-intro","screen-quiz","screen-results"].forEach(s => {
+    const el = document.getElementById(s);
+    el.classList.toggle("hidden", s !== id);
+    if (s === id) { el.style.animation = "none"; el.offsetHeight; el.style.animation = ""; }
+  });
+}
+
+function startQuiz() {
+  staffName = document.getElementById("staff-name").value.trim();
+  if (!staffName) { document.getElementById("name-err").classList.remove("hidden"); return; }
+  document.getElementById("name-err").classList.add("hidden");
+  current = 0; answers = [];
+  renderQ();
+  show("screen-quiz");
+}
+
+function renderQ() {
+  selectedIdx = null;
+  const q = QUESTIONS[current];
+  const pct = (current / QUESTIONS.length) * 100;
+
+  document.getElementById("prog").style.width = pct + "%";
+  document.getElementById("q-cat").textContent = q.cat;
+  const diffEl = document.getElementById("q-diff");
+  diffEl.textContent = q.diff; diffEl.className = "badge " + DIFF_CLASS[q.diff];
+  document.getElementById("q-num").textContent = `${current + 1} / ${QUESTIONS.length}`;
+  document.getElementById("q-text").textContent = q.q;
+
+  document.getElementById("btn-next").classList.add("hidden");
+  document.getElementById("btn-finish").classList.add("hidden");
+
+  const optsEl = document.getElementById("q-opts");
+  optsEl.innerHTML = "";
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement("button");
+    btn.className = "option";
+    btn.innerHTML = `<span style="margin-right:10px;color:var(--muted);font-family:var(--mono)">${String.fromCharCode(65+i)}.</span>${opt}`;
+    btn.onclick = () => selectOpt(i, btn);
+    optsEl.appendChild(btn);
+  });
+}
+
+function selectOpt(i, btn) {
+  // If already selected, do nothing
+  if (selectedIdx !== null) return;
+  selectedIdx = i;
+
+  // Mark selected visually
+  document.querySelectorAll(".option").forEach(b => {
+    b.classList.remove("selected");
+    b.disabled = true;
+  });
+  btn.classList.add("selected");
+
+  // Record answer (correct/wrong calculated silently)
+  answers.push({ cat: QUESTIONS[current].cat, correct: i === QUESTIONS[current].ans });
+
+  // Show next button
+  const isLast = current + 1 >= QUESTIONS.length;
+  document.getElementById(isLast ? "btn-finish" : "btn-next").classList.remove("hidden");
+}
+
+function nextQ() { current++; renderQ(); }
+
+function showResults() {
+  const score = answers.filter(a => a.correct).length;
+  const total = QUESTIONS.length;
+  const pct   = Math.round((score / total) * 100);
+  const grade = pct >= 85 ? ["Excellent","b-green","🏆"]
+              : pct >= 70 ? ["Good","b-blue","👍"]
+              : pct >= 50 ? ["Developing","b-yellow","📈"]
+              :              ["Needs Work","b-red","🔧"];
+
+  document.getElementById("res-name").textContent = `${grade[2]}  ${staffName}`;
+  const pctEl = document.getElementById("res-pct");
+  pctEl.textContent = pct + "%";
+  pctEl.style.color = pct>=85?"var(--green)":pct>=70?"#60a5fa":pct>=50?"var(--yellow)":"var(--red)";
+  const gradeEl = document.getElementById("res-grade");
+  gradeEl.textContent = grade[0]; gradeEl.className = "badge " + grade[1];
+  document.getElementById("res-frac").textContent = `${score} correct out of ${total} questions`;
+
+  // Category bars
+  const barsEl = document.getElementById("cat-bars");
+  barsEl.innerHTML = "";
+  CATS.forEach(cat => {
+    const catAnswers = answers.filter(a => a.cat === cat);
+    const correct    = catAnswers.filter(a => a.correct).length;
+    const catTotal   = QUESTIONS.filter(q => q.cat === cat).length;
+    const p = catTotal > 0 ? Math.round((correct / catTotal) * 100) : 0;
+    const col = p >= 80 ? "var(--green)" : p >= 60 ? "var(--yellow)" : "var(--red)";
+    barsEl.innerHTML += `
+      <div class="cat-row">
+        <div class="cat-meta">
+          <span>${cat}</span>
+          <span style="color:${col};font-family:var(--mono);font-weight:700">${correct}/${catTotal} (${p}%)</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:${p}%;background:${col}"></div></div>
+      </div>`;
+  });
+
+  show("screen-results");
+}
+
+async function submitResults() {
+  const btn    = document.getElementById("btn-submit");
+  const errEl  = document.getElementById("submit-err");
+  errEl.classList.add("hidden");
+
+  if (WEBHOOK === "YOUR_MAKE_WEBHOOK_URL") {
+    errEl.textContent = "⚠ Webhook not configured. Contact your IT manager.";
+    errEl.classList.remove("hidden");
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = "Submitting…";
+
+  const score = answers.filter(a => a.correct).length;
+  const total = QUESTIONS.length;
+  const pct   = Math.round((score / total) * 100);
+  const grade = pct>=85?"Excellent":pct>=70?"Good":pct>=50?"Developing":"Needs Work";
+
+  const catData = {};
+  CATS.forEach(cat => {
+    const correct = answers.filter(a => a.cat === cat && a.correct).length;
+    catData["cat_" + cat.toLowerCase().replace(/[^a-z0-9]/g,"_")] = correct;
+  });
+
+  const payload = {
+    name: staffName,
+    date: new Date().toISOString().split("T")[0],
+    pct, result: grade, score, total,
+    ...catData
+  };
+
+  try {
+    await fetch(WEBHOOK, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      mode: "no-cors"
+    });
+    // Show success state
+    const box = document.getElementById("submit-box");
+    box.classList.add("done");
+    box.innerHTML = `
+      <div style="font-size:28px;margin-bottom:8px">✅</div>
+      <p style="color:#86efac;font-weight:700;font-family:var(--mono);font-size:13px;margin-bottom:4px">Results submitted!</p>
+      <p style="color:#4ade80;font-size:12px">Your manager can see your score in the Notion database.</p>`;
+  } catch(e) {
+    errEl.textContent = "⚠ Submission failed. Check your internet connection and try again.";
+    errEl.classList.remove("hidden");
+    btn.disabled = false;
+    btn.textContent = "📊 Submit to Notion";
+  }
+}
+
+function restart() {
+  document.getElementById("staff-name").value = "";
+  current = 0; answers = []; staffName = ""; selectedIdx = null;
+  show("screen-intro");
+}
+</script>
+</body>
+</html>
