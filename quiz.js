@@ -1,8 +1,4 @@
-/* ============================================================
-   ICT Helpdesk Assessment — quiz.js
-   60-question pool · 30 randomly selected per session
-   PDF export via jsPDF
-   ============================================================ */
+
 
 'use strict';
 
@@ -183,7 +179,7 @@ const QUESTION_POOL = [
       'Remove their Office 365 licence only'
     ],
     ans: 1,
-    exp: "Disable the account in AD by right-clicking the user and selecting Disable Account. This prevents login without deleting the account or its data."
+    exp: "Disable the account in ADUC by right-clicking the user and selecting Disable Account. This prevents login without deleting the account or its data."
   },
   {
     cat: 'Active Directory', diff: 'Medium',
@@ -207,7 +203,7 @@ const QUESTION_POOL = [
       'Storing the user\'s door access card number'
     ],
     ans: 1,
-    exp: "Extension attributes (extensionAttribute1–5) are custom fields in AD used to store extra information about a user — such as identifiers used by integrated systems like email routing."
+    exp: "Extension attributes (extensionAttribute1–5) are custom fields in AD used to store extra information about a user — such as identifiers used by integrated systems like email routing or 3CX."
   },
   {
     cat: 'Active Directory', diff: 'Medium',
@@ -812,45 +808,80 @@ const Quiz = {
     el('btn-next').classList.add('hidden');
     el('btn-finish').classList.add('hidden');
 
+    // Clear any previous explanation
+    const oldExp = document.getElementById('inline-exp');
+    if (oldExp) oldExp.remove();
+
     // Render options
     const optsEl = el('q-opts');
     optsEl.innerHTML = '';
     q.opts.forEach((opt, i) => {
       const btn = document.createElement('button');
       btn.className = 'option';
+      btn.dataset.idx = i;
       btn.innerHTML = `<span class="opt-letter">${String.fromCharCode(65 + i)}</span><span>${opt}</span>`;
-      btn.addEventListener('click', () => Quiz.select(i, btn));
+      btn.addEventListener('click', () => Quiz.select(i));
       optsEl.appendChild(btn);
     });
   },
 
-  select(i, btn) {
-    if (State.selectedIdx !== null) return;
+  select(i) {
+    // Allow changing answer — just update highlight, don't lock yet
     State.selectedIdx = i;
 
-    // Lock all options and mark selection
+    // Update option highlights
     document.querySelectorAll('.option').forEach(b => {
-      b.classList.add('locked');
-    });
-    btn.classList.add('selected');
-
-    // Record answer
-    State.answers.push({
-      cat:     State.sessionQs[State.current].cat,
-      chosen:  i,
-      correct: i === State.sessionQs[State.current].ans
+      b.classList.toggle('selected', parseInt(b.dataset.idx) === i);
     });
 
+    // Show explanation below options
+    const q = State.sessionQs[State.current];
+    let expEl = document.getElementById('inline-exp');
+    if (!expEl) {
+      expEl = document.createElement('div');
+      expEl.id = 'inline-exp';
+      expEl.style.cssText = [
+        'background:rgba(37,99,235,0.07)',
+        'border:1px solid rgba(37,99,235,0.22)',
+        'border-radius:10px',
+        'padding:14px 18px',
+        'margin-top:14px',
+        'font-size:13px',
+        'color:#93c5fd',
+        'line-height:1.65'
+      ].join(';');
+      el('q-opts').insertAdjacentElement('afterend', expEl);
+    }
+    expEl.innerHTML = '<strong style="font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.1em">💡 Explanation — </strong>' + q.exp;
+
+    // Show next/finish button
     const isLast = State.current + 1 >= State.sessionQs.length;
-    el(isLast ? 'btn-finish' : 'btn-next').classList.remove('hidden');
+    el('btn-next').classList.toggle('hidden', isLast);
+    el('btn-finish').classList.toggle('hidden', !isLast);
   },
 
   next() {
+    // Lock in the answer before moving
+    if (State.selectedIdx === null) return;
+    const q = State.sessionQs[State.current];
+    State.answers.push({
+      cat:     q.cat,
+      chosen:  State.selectedIdx,
+      correct: State.selectedIdx === q.ans
+    });
     State.current++;
     Quiz.renderQ();
   },
 
   finish() {
+    // Lock in the last answer
+    if (State.selectedIdx === null) return;
+    const q = State.sessionQs[State.current];
+    State.answers.push({
+      cat:     q.cat,
+      chosen:  State.selectedIdx,
+      correct: State.selectedIdx === q.ans
+    });
     Quiz.buildResults();
     show('screen-results');
   },
