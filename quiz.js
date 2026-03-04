@@ -14,26 +14,36 @@ const QUESTION_POOL = [
   {
     cat: 'Office 365', diff: 'Easy',
     q: "A user cannot access their Outlook email. What is your first step?",
-    opts: ['Reinstall Office', 'Check their licence in the Office 365 Admin Centre', 'Reset their password', 'Restart their computer'],
+    opts: [
+      'Reset their password in Active Directory',
+      'Check their licence in the Office 365 Admin Centre',
+      'Uninstall and reinstall the Office apps on the device',
+      'Remove and re-add their email account manually'
+    ],
     ans: 1,
-    exp: "Always check the licence first in the O365 Admin Centre — if no licence is assigned the user won't have access to email or Office apps."
+    exp: "Always check the licence first in the O365 Admin Centre — if no licence is assigned the user will not have access to email or Office apps."
   },
   {
     cat: 'Office 365', diff: 'Easy',
     q: "What is the difference between an A3 and A1 licence at this organisation?",
     opts: [
-      'A3 is for students, A1 is for staff',
-      'A3 is assigned to full-time staff and includes the full Office suite; A1 is for casual staff and has limited features',
-      'They are the same licence with different names',
-      'A1 includes Teams; A3 does not'
+      'A3 is for students; A1 is for full-time staff',
+      'A3 is for full-time staff with the full Office suite; A1 is for casual staff with limited access',
+      'A1 is the premium licence; A3 is the basic one',
+      'A3 includes door access; A1 is limited to email only'
     ],
     ans: 1,
     exp: "Full-time staff receive an A3 licence which includes the full Office suite. Casual staff receive an A1 licence with more limited access."
   },
   {
     cat: 'Office 365', diff: 'Easy',
-    q: "A staff member wants to share a folder with a colleague. Where should they do this?",
-    opts: ['Create a shared drive in Windows Explorer', 'Share it via a Teams channel or Teams folder', 'Email the folder as an attachment', 'Use a USB drive'],
+    q: "A staff member wants to share files with a colleague. Where should they do this?",
+    opts: [
+      'Save them to a USB drive and hand it over in person',
+      'Share via a Teams channel or Teams folder',
+      'Create a shared Windows network drive on their PC',
+      'Email the files across as attachments'
+    ],
     ans: 1,
     exp: "We use Teams for sharing folders and files — not traditional shared drives. Staff share content through Teams channels or by sharing folders within Teams."
   },
@@ -41,37 +51,37 @@ const QUESTION_POOL = [
     cat: 'Office 365', diff: 'Easy',
     q: "An advisor asks you to give an on-site student a Teams licence. What do you do?",
     opts: [
-      'Add the licence in the O365 Admin Centre straight away',
-      'Politely explain that the organisation does not provide Teams licences to on-site students',
-      'Create a guest account for the student',
-      'Escalate to the principal'
+      'Add the Teams licence immediately in the O365 Admin Centre',
+      'Explain politely that on-site students do not receive Teams licences at this organisation',
+      'Set up a guest Teams account for the student instead',
+      'Assign them an A1 licence as a workaround'
     ],
     ans: 1,
     exp: "Our organisation does not offer Teams licences to on-site students. Politely explain this policy to the advisor."
   },
   {
     cat: 'Office 365', diff: 'Easy',
-    q: "A user says they cannot find Office apps on their device. How do they install Office?",
+    q: "A user cannot find Office apps on their device. How do they install them?",
     opts: [
-      'Download it from a third-party website',
+      'Call Microsoft support to request a fresh download link',
       'Log into Office 365, go to Apps, and click Install Office',
-      'Call Microsoft support',
-      'Reinstall Windows'
+      'Download from a third-party site using their work email address',
+      'Raise a ticket for IT to push the apps remotely via JAMF'
     ],
     ans: 1,
-    exp: "Staff can install Office by logging into Office 365 online, navigating to the Apps section, and clicking Install Office. This downloads the full Office suite."
+    exp: "Staff can install Office by logging into Office 365 online, navigating to the Apps section, and clicking Install Office."
   },
   {
     cat: 'Office 365', diff: 'Medium',
     q: "What is the difference between a Distribution Group and a Microsoft 365 Group?",
     opts: [
-      'They are the same thing',
-      'A Distribution Group is used to broadcast emails to a list of users; a Microsoft 365 Group is multipurpose — it includes a shared inbox, Teams, and more',
-      'A Distribution Group includes SharePoint; a Microsoft 365 Group is email only',
-      'Distribution Groups are for students only'
+      'A Distribution Group includes Teams; a Microsoft 365 Group is email only',
+      'A Distribution Group broadcasts emails to a list; a Microsoft 365 Group includes a shared inbox, Teams, and more',
+      'Distribution Groups are for staff only; Microsoft 365 Groups are for students',
+      'A Microsoft 365 Group is older technology; Distribution Groups are the modern replacement'
     ],
     ans: 1,
-    exp: "A Distribution Group broadcasts emails to a list of users. A Microsoft 365 Group is multipurpose — it comes with a shared inbox, calendar, Teams workspace, and SharePoint."
+    exp: "A Distribution Group broadcasts emails to a list. A Microsoft 365 Group is multipurpose — it includes a shared inbox, calendar, Teams workspace, and SharePoint."
   },
 
   /* ═══ SEQTA (6) ═══ */
@@ -79,10 +89,10 @@ const QUESTION_POOL = [
     cat: 'SEQTA', diff: 'Easy',
     q: "What is SEQTA used for at this organisation?",
     opts: [
-      'Network monitoring and device management',
-      'Learning Management — including course content, attendance, and pastoral care (behaviour)',
-      'Door access and security',
-      'Payroll and HR management'
+      'Managing staff leave requests and payroll',
+      'Learning management — course content, attendance, and pastoral care',
+      'Monitoring student internet activity and web filtering',
+      'Managing door access cards and staff ID printing'
     ],
     ans: 1,
     exp: "SEQTA is our Learning Management System (LMS). It is used for delivering course content, recording attendance, and managing pastoral care including behaviour."
@@ -91,61 +101,61 @@ const QUESTION_POOL = [
     cat: 'SEQTA', diff: 'Easy',
     q: "What is the difference between SEQTA Teach and SEQTA Learn?",
     opts: [
-      'SEQTA Teach is for students; SEQTA Learn is for advisors',
-      'SEQTA Teach is the advisor-facing portal; SEQTA Learn is the student-facing portal',
-      'They are the same portal with different names',
-      'SEQTA Learn is for administration staff only'
+      'SEQTA Teach is the student portal; SEQTA Learn is the advisor portal',
+      'SEQTA Teach is the advisor portal; SEQTA Learn is the student portal',
+      'They are the same product — the name just depends on which school uses it',
+      'SEQTA Learn includes payroll features that SEQTA Teach does not have'
     ],
     ans: 1,
-    exp: "SEQTA Teach is used by advisors to manage courses, attendance, and behaviour. SEQTA Learn is the portal students use to access their courses and content."
+    exp: "SEQTA Teach is used by advisors to manage courses, attendance, and behaviour. SEQTA Learn is the portal students use to access their courses."
   },
   {
     cat: 'SEQTA', diff: 'Easy',
     q: "An advisor cannot log into SEQTA. What is your first step?",
     opts: [
-      'Create them a new SEQTA account immediately',
-      'Go to SEQTA Admin > Users, check their account details are correct, try signing in as the user, and escalate if the issue continues',
-      'Contact SEQTA support right away',
-      'Reinstall their browser'
+      'Delete the account and create a fresh one from scratch',
+      'Go to SEQTA Admin > Users, check their details, try signing in as them, and escalate if needed',
+      'Ask the advisor to wait 24 hours and try logging in again',
+      'Reset the SEQTA server and have all users retry'
     ],
     ans: 1,
-    exp: "Check SEQTA Admin > Users first — verify the name, account details, and that the account is active. Try signing in as the user to replicate the issue, then escalate if needed."
+    exp: "Check SEQTA Admin > Users first — verify the account details are correct and the account is active. Try signing in as the user to replicate the issue, then escalate if needed."
   },
   {
     cat: 'SEQTA', diff: 'Easy',
-    q: "A student says they cannot see their courses in SEQTA Learn. What do you check?",
+    q: "A student cannot see their courses in SEQTA Learn. What do you check?",
     opts: [
-      'Whether the student has a valid email address',
-      'Whether the advisor has added them to the calendar classes in SEQTA',
-      'Whether the student has installed SEQTA on their device',
-      'Whether the student has a Teams licence'
+      'Whether the student is using the correct web browser',
+      'Whether the advisor has added them to the correct calendar classes in SEQTA',
+      'Whether the student\'s iPad has the latest iPadOS version installed',
+      'Whether the student\'s Office 365 account is active and licensed'
     ],
     ans: 1,
-    exp: "Course visibility in SEQTA Learn depends on the advisor adding the student to the correct calendar classes. If this hasn't been done, no courses will appear."
+    exp: "Course visibility in SEQTA Learn depends on the advisor adding the student to the correct calendar classes. If this has not been done, no courses will appear."
   },
   {
     cat: 'SEQTA', diff: 'Easy',
-    q: "An advisor wants to record a behaviour incident for a student. Where do they do this in SEQTA?",
+    q: "Where does an advisor record a student behaviour incident?",
     opts: [
-      'In SEQTA Learn under the student profile',
+      'In SEQTA Learn under the student\'s personal dashboard',
       'In SEQTA Teach under Pastoral Care',
-      'In Active Directory under the student account',
-      'In the Office 365 Admin Centre'
+      'In the Office 365 Admin Centre under the student\'s account',
+      'In Active Directory as a note on the student\'s profile'
     ],
     ans: 1,
-    exp: "Pastoral care including behaviour incidents is recorded in SEQTA Teach. Advisors navigate to the Pastoral Care section to log and manage student behaviour."
+    exp: "Pastoral care including behaviour incidents is recorded in SEQTA Teach. Advisors navigate to the Pastoral Care section to log and manage behaviour."
   },
   {
     cat: 'SEQTA', diff: 'Easy',
-    q: "An advisor says attendance is not updating for their class. What do you check first?",
+    q: "An advisor says attendance is not saving for their class. What do you check first?",
     opts: [
-      'Whether the advisor has the correct browser installed',
-      'Whether the class is set up correctly in SEQTA and the advisor is marking attendance in SEQTA Teach',
-      'Whether the students have logged into SEQTA Learn',
-      'Whether the school network is working'
+      'Whether all the students have logged into SEQTA Learn that morning',
+      'Whether the class is set up correctly and the advisor is marking attendance in SEQTA Teach',
+      'Whether the advisor\'s browser needs to be updated to the latest version',
+      'Whether the school\'s internet connection is working normally'
     ],
     ans: 1,
-    exp: "Attendance is recorded by advisors in SEQTA Teach. If it's not updating, check that the class is set up correctly and the advisor is using the right section in SEQTA Teach."
+    exp: "Attendance is recorded in SEQTA Teach. If it is not saving, check the class is set up correctly and the advisor is using the correct section in SEQTA Teach."
   },
 
   /* ═══ ACTIVE DIRECTORY (7) ═══ */
@@ -153,34 +163,34 @@ const QUESTION_POOL = [
     cat: 'Active Directory', diff: 'Easy',
     q: "A user is locked out of their Windows account. What do you do?",
     opts: [
-      'Tell them to wait 30 minutes',
+      'Ask them to wait an hour for the lockout timer to expire on its own',
       'Unlock or reset their password in Active Directory Users and Computers (ADUC)',
-      'Reinstall Windows on their device',
-      'Create them a new account'
+      'Rebuild their Windows user profile on the device',
+      'Delete the account and set up a brand new one for them'
     ],
     ans: 1,
     exp: "Use Active Directory Users and Computers (ADUC) to find the user, right-click, and unlock the account or reset their password."
   },
   {
     cat: 'Active Directory', diff: 'Easy',
-    q: "How do you create a new user in Active Directory?",
+    q: "How do you create a new user account in Active Directory?",
     opts: [
-      'In the Office 365 Admin Centre only',
-      'In Active Directory Users and Computers (ADUC) — right-click the correct OU and select New > User',
-      'By emailing Microsoft',
-      'In SEQTA Admin'
+      'In the Office 365 Admin Centre under Users > Add a user',
+      'In Active Directory Users and Computers — right-click the correct OU and select New > User',
+      'In SEQTA Admin by adding them as a new staff member',
+      'By submitting a request to Microsoft through their support portal'
     ],
     ans: 1,
-    exp: "New user accounts are created in ADUC. Navigate to the correct Organisational Unit, right-click and select New > User, then fill in the required details."
+    exp: "New user accounts are created in ADUC. Navigate to the correct OU, right-click and select New > User, then fill in the required details."
   },
   {
     cat: 'Active Directory', diff: 'Easy',
     q: "A staff member is leaving. How do you disable their AD account?",
     opts: [
-      'Delete it immediately',
+      'Change their password to something random and sign them out remotely',
       'Find their account in ADUC, right-click, and select Disable Account',
-      'Change their password to something random',
-      'Remove their Office 365 licence only'
+      'Remove their account from all email groups and wait for it to expire',
+      'Move their account to the Recycle Bin folder in ADUC'
     ],
     ans: 1,
     exp: "Disable the account in ADUC by right-clicking the user and selecting Disable Account. This prevents login without deleting the account or its data."
@@ -189,168 +199,173 @@ const QUESTION_POOL = [
     cat: 'Active Directory', diff: 'Medium',
     q: "What is the proxyAddresses field used for in Active Directory?",
     opts: [
-      'Storing the user\'s physical office address',
-      'Storing the user\'s email addresses — the primary address is prefixed with SMTP: (uppercase) and secondary addresses with smtp: (lowercase)',
-      'Linking the user account to their door access card',
-      'Storing the user\'s phone extension number'
+      'Storing the user\'s physical work location and desk number',
+      'Storing email addresses — primary prefixed with SMTP: (uppercase), aliases with smtp: (lowercase)',
+      'Storing the user\'s network proxy server and port settings',
+      'Linking the user\'s AD account to their Integriti door access record'
     ],
     ans: 1,
-    exp: "proxyAddresses stores email addresses for a user. The primary address has SMTP: in uppercase — e.g. SMTP:user@school.edu.au. Secondary or alias addresses use lowercase smtp:."
+    exp: "proxyAddresses stores email addresses. The primary address uses uppercase SMTP: and alias addresses use lowercase smtp:."
   },
   {
     cat: 'Active Directory', diff: 'Medium',
-    q: "What are Extension Attributes (extensionAttribute1–5) used for in Active Directory at this organisation?",
+    q: "What are Extension Attributes (extensionAttribute1–5) used for in AD at this organisation?",
     opts: [
-      'Storing the user\'s password hints',
-      'Storing additional information like email routing or system-specific identifiers used by integrated systems',
-      'Storing the user\'s profile photo',
-      'Storing the user\'s door access card number'
+      'Storing the user\'s profile photo and personal display preferences',
+      'Storing additional identifiers used by integrated systems like 3CX or email routing',
+      'Storing the user\'s password history and account recovery questions',
+      'Controlling which Organisational Units a user can browse in ADUC'
     ],
     ans: 1,
-    exp: "Extension attributes (extensionAttribute1–5) are custom fields in AD used to store extra information about a user — such as identifiers used by integrated systems like email routing or 3CX."
+    exp: "Extension attributes are custom fields used to store extra information — like identifiers used by integrated systems such as 3CX or email routing."
   },
   {
     cat: 'Active Directory', diff: 'Medium',
-    q: "What does the 'memberOf' attribute on a user account in AD show?",
+    q: "What does the 'memberOf' attribute on a user account show?",
     opts: [
-      'Who manages that user\'s account',
-      'Which security and distribution groups the user belongs to — this controls their access to resources and systems',
-      'Which computer the user last logged into',
-      'Which OU the user account lives in'
+      'Which administrator last modified or created the user\'s account',
+      'Which security and distribution groups the user belongs to, controlling their access to resources',
+      'Which computer the user most recently logged into on the domain',
+      'Which Organisational Unit the user account is currently stored in'
     ],
     ans: 1,
-    exp: "memberOf lists all the groups a user is a member of. Group membership controls access to shared resources, email distribution lists, and permissions across systems."
+    exp: "memberOf lists all groups the user belongs to. Group membership controls access to shared resources, email lists, and permissions across systems."
   },
   {
     cat: 'Active Directory', diff: 'Medium',
-    q: "A user has lost access to a resource they had access to before. No one has manually changed their account. What AD attribute would you check?",
+    q: "A user has lost access to something they had before. No one has manually changed their account. What do you check?",
     opts: [
-      'Their display name',
-      'Their memberOf groups — they may have been removed from a security group that granted access',
-      'Their office location',
-      'Their login time'
+      'Whether their display name has a typo or formatting issue in it',
+      'Their memberOf groups — they may have been removed from a relevant security group',
+      'Whether their assigned computer has recently been moved to a different desk',
+      'Whether their AD password expired in the last 24 hours without them knowing'
     ],
     ans: 1,
-    exp: "Access to resources is controlled by security group membership (memberOf). If a user was accidentally removed from a group, they immediately lose access to whatever that group controls."
+    exp: "Access is controlled by security group membership. If a user was removed from a group, they immediately lose access to whatever that group controlled."
   },
 
   /* ═══ INNER RANGE & CARDEXCHANGE (5) ═══ */
   {
     cat: 'Inner Range', diff: 'Easy',
     q: "What type of cards does the organisation use for door access?",
-    opts: ['Magnetic stripe cards', 'MiFare RFID cards', 'Barcode cards', 'Proximity (125kHz prox) cards'],
+    opts: [
+      'Magnetic stripe swipe cards, similar to a hotel room key',
+      'MiFare RFID contactless smart cards',
+      'Standard printed barcode ID cards scanned at each reader',
+      'Proximity 125kHz cards used in older access control systems'
+    ],
     ans: 1,
     exp: "The organisation uses MiFare RFID cards for door access. These are contactless smart cards that communicate wirelessly with door readers."
   },
   {
     cat: 'Inner Range', diff: 'Easy',
-    q: "Where is the card number for a staff member's door access card stored in Active Directory?",
+    q: "Where is a staff member\'s door access card number stored in Active Directory?",
     opts: [
-      'In the proxyAddresses field',
-      'In the employeeNumber field — this syncs through to Integriti automatically',
-      'In extensionAttribute1',
-      'In the user\'s description field'
+      'In extensionAttribute1 under their user account in ADUC',
+      'In the employeeNumber field — this syncs automatically through to Integriti',
+      'In the proxyAddresses field alongside their email addresses',
+      'In the description field as a free-text note added during onboarding'
     ],
     ans: 1,
-    exp: "The card digits are stored in the employeeNumber field in Active Directory, which automatically syncs through to the Integriti door access system."
+    exp: "The card digits are stored in the employeeNumber field in AD, which automatically syncs through to the Integriti door access system."
   },
   {
     cat: 'Inner Range', diff: 'Easy',
-    q: "A staff member's door access card has stopped working. What two things do you check in Integriti?",
+    q: "A staff member\'s access card has stopped working. What two things do you check in Integriti?",
     opts: [
-      'Whether the reader needs a firmware update and whether the door is locked',
-      'Whether the user is in an active permission group and whether \'User Cancelled\' is unticked on their Integriti record',
-      'Whether the card printer is online and whether the card is the right colour',
-      'Whether their AD account is in the right OU and whether their email is working'
+      'Whether the card reader firmware is current and whether the door is fully closed',
+      'Whether the user is in an active permission group and whether User Cancelled is unticked',
+      'Whether the card was reprinted recently and whether the door schedule is still valid',
+      'Whether the reader is online and whether the card colour matches the correct security zone'
     ],
     ans: 1,
-    exp: "In Integriti, check that the user is in an active permission group (which controls which doors they can access) and that 'User Cancelled' is unticked — if it's ticked, the card won't work."
+    exp: "In Integriti, check the user is in an active permission group and that 'User Cancelled' is unticked — if it is ticked, the card will be denied at all readers."
   },
   {
     cat: 'Inner Range', diff: 'Easy',
     q: "What is CardExchange used for?",
     opts: [
-      'Managing door access schedules in Integriti',
-      'Printing staff and student ID/access cards',
-      'Syncing card numbers from Active Directory',
-      'Monitoring which doors have been accessed'
+      'Managing door permission groups and time schedules in Integriti',
+      'Printing staff and student ID and access cards',
+      'Syncing card numbers from Active Directory into Integriti automatically',
+      'Viewing a log of which doors have been accessed and by whom'
     ],
     ans: 1,
-    exp: "CardExchange is the card printing software used to print MiFare ID and access cards for staff and students."
+    exp: "CardExchange is the card printing software used to design and print MiFare ID and access cards for staff and students."
   },
   {
     cat: 'Inner Range', diff: 'Medium',
     q: "A new staff member needs door access set up. What is the correct process?",
     opts: [
-      'Add them to a door group in Active Directory and restart Integriti',
-      'Ensure their card number is in the employeeNumber field in AD, add them to the correct permission group in Integriti, and make sure User Cancelled is unticked',
-      'Print a card in CardExchange and hand it to them — no further setup needed',
-      'Contact the security company to provision their access'
+      'Print a card in CardExchange and hand it to them — it works automatically once printed',
+      'Add their card number to employeeNumber in AD, add them to the right permission group in Integriti, and untick User Cancelled',
+      'Add them to a door security group in Active Directory and restart the Integriti service',
+      'Contact the building security company to provision and activate access on your behalf'
     ],
     ans: 1,
-    exp: "For door access: the card number must be in employeeNumber in AD (syncs to Integriti), the user must be in an active permission group in Integriti, and User Cancelled must be unticked."
+    exp: "For door access: put the card number in employeeNumber in AD (it syncs to Integriti), add the user to an active permission group, and ensure User Cancelled is unticked."
   },
 
   /* ═══ 3CX (5) ═══ */
   {
     cat: '3CX', diff: 'Easy',
-    q: "How is a new staff member's 3CX phone account set up?",
+    q: "How is a new staff member\'s 3CX phone account created?",
     opts: [
-      'They set it up themselves by downloading the app',
-      'Their details and extension attribute are added to the 3CX spreadsheet, then the account is created in the 3CX admin console',
-      'It is created automatically when their AD account is made',
-      'They call the phone provider to request an extension'
+      'It is created automatically when their Office 365 account is provisioned',
+      'Their details and extension are added to the 3CX spreadsheet, then the account is created in the 3CX admin console',
+      'The staff member downloads 3CX and sets up their own account on first launch',
+      'IT submits a request form to the phone provider to allocate a new extension number'
     ],
     ans: 1,
-    exp: "To set up 3CX for a new user, their details and extension attribute are added to the 3CX spreadsheet, and then the account is manually created in the 3CX admin console."
+    exp: "To set up 3CX, the staff member\'s details and extension attribute are added to the 3CX spreadsheet, then the account is manually created in the 3CX admin console."
   },
   {
     cat: '3CX', diff: 'Easy',
-    q: "A staff member has a new phone and needs to install 3CX on it. How do they do this?",
+    q: "A staff member has a new phone and needs 3CX set up on it. How is this done?",
     opts: [
-      'Download 3CX from the App Store and enter their credentials manually',
-      'Scan the QR code provided from the 3CX admin console to automatically configure the app on their phone',
-      'Contact the phone provider to transfer the account',
-      'Reinstall 3CX on their old phone first'
+      'Download 3CX and manually type in the server address and their extension credentials',
+      'Scan the QR code from the 3CX admin console to automatically configure the app',
+      'Call the phone provider to request the extension be transferred to the new device',
+      'Log into the 3CX web portal and select Transfer Account to New Device'
     ],
     ans: 1,
-    exp: "3CX is installed on a phone by scanning the QR code from the 3CX admin console. This automatically configures the app with the correct server and account settings."
+    exp: "3CX is set up on a new phone by scanning the QR code from the 3CX admin console. This automatically configures the app with the correct server and account settings."
   },
   {
     cat: '3CX', diff: 'Easy',
-    q: "A staff member's 3CX app shows 'Not Registered'. What does this mean?",
+    q: "A staff member\'s 3CX app says 'Not Registered'. What does this mean?",
     opts: [
-      'Their phone plan has been cancelled',
+      'Their phone plan has been cancelled or suspended by the provider',
       'The app is not signed in properly — they need to sign in again or re-scan the QR code',
-      'Their Office 365 account is locked',
-      'The 3CX server is offline'
+      'Their extension number has been deleted from the 3CX admin console',
+      'The 3CX server is experiencing a full outage affecting all staff extensions'
     ],
     ans: 1,
-    exp: "'Not Registered' means the 3CX app is not connected to the server. The most common fix is to sign in again or re-scan the QR code from the 3CX admin console."
+    exp: "'Not Registered' means the app is not connected to the server. The most common fix is to sign in again or re-scan the QR code from the 3CX admin console."
   },
   {
     cat: '3CX', diff: 'Easy',
-    q: "A staff member is not receiving calls on 3CX. What do you check first?",
+    q: "A staff member is not receiving calls on their 3CX app. What do you check first?",
     opts: [
-      'Whether their phone is charged',
-      'Whether their extension is registered in the 3CX admin console — a green status means registered, red means not',
-      'Whether their Office 365 licence is active',
-      'Whether the phone line provider is having an outage'
+      'Whether their phone has enough available storage space to run 3CX properly',
+      'Whether their extension shows as registered (green) in the 3CX admin console',
+      'Whether their Office 365 licence includes a calling or phone plan feature',
+      'Whether the internet provider is experiencing an outage in the local area'
     ],
     ans: 1,
     exp: "Check the extension status in the 3CX admin console. Green = registered and able to receive calls. Red = not registered, meaning the app is not connected."
   },
   {
     cat: '3CX', diff: 'Medium',
-    q: "Where is a staff member's 3CX extension number stored in Active Directory?",
+    q: "Where is a staff member\'s 3CX extension number stored in Active Directory?",
     opts: [
-      'In the telephoneNumber field',
-      'In the extension attribute field in their AD account — this is used when setting up the 3CX account',
-      'In the employeeNumber field',
-      'In the proxyAddresses field'
+      'In the telephoneNumber field on their AD user account',
+      'In the extension attribute field in AD — used when creating the account in the 3CX admin console',
+      'In the employeeNumber field alongside their door access card digits',
+      'In the description field as a free-text note added when the account was set up'
     ],
     ans: 1,
-    exp: "The 3CX extension attribute is stored in the user's AD extension attribute field. This is referenced when creating the account in the 3CX admin console."
+    exp: "The 3CX extension attribute is stored in the AD extension attribute field. This is referenced when creating the account in the 3CX admin console."
   },
 
   /* ═══ ASSURE (4) ═══ */
@@ -358,86 +373,96 @@ const QUESTION_POOL = [
     cat: 'Assure', diff: 'Easy',
     q: "What is Assure used for at this organisation?",
     opts: [
-      'Managing staff Office 365 licences',
-      'Monitoring student internet activity — including what websites they visit',
-      'Managing door access cards',
-      'Tracking device locations via GPS'
+      'Managing Office 365 licences and staff user account provisioning',
+      'Monitoring student internet activity and what websites they visit',
+      'Pushing app updates and policy changes to student iPads via MDM',
+      'Recording student attendance and logging behaviour incidents'
     ],
     ans: 1,
     exp: "Assure is used to monitor student internet activity. It gives visibility over what websites students are visiting and allows the team to manage web filtering."
   },
   {
     cat: 'Assure', diff: 'Easy',
-    q: "A student asks you to unblock a website. What do you do?",
+    q: "A student asks you to unblock a website for them. What do you do?",
     opts: [
-      'Unblock it yourself in Assure immediately',
-      'This needs to be escalated — website unblocking requests are not a Level 1 task',
-      'Tell the student to use their personal phone instead',
-      'Disable the student\'s internet filtering'
+      'Unblock it in Assure straight away if the site looks legitimate and educational',
+      'Escalate the request — website unblocking is not a Level 1 task and needs proper approval',
+      'Tell the student to use their personal phone data to access the site instead',
+      'Temporarily disable the student\'s content filtering while they need access'
     ],
     ans: 1,
-    exp: "Website unblocking requests need to be escalated to the appropriate person. This is not a Level 1 task — changes to web filtering require approval and are handled at a higher level."
+    exp: "Website unblocking requests need to be escalated. Changes to web filtering require approval and are handled at a higher level — not by Level 1 staff."
   },
   {
     cat: 'Assure', diff: 'Easy',
-    q: "A teacher reports that students cannot access the internet at all. What do you do?",
+    q: "A whole class cannot access the internet. What do you do?",
     opts: [
-      'Restart all the students\' iPads',
-      'Check Assure for any network issues — if it appears to be a network problem, escalate it',
-      'Tell the teacher to use offline resources for the day',
-      'Call the internet provider immediately'
+      'Restart all the student iPads in the room one by one and retry',
+      'Check Assure for any visible network issues and escalate if it looks like a network problem',
+      'Tell the teacher to use offline resources for the rest of the day',
+      'Call the internet service provider directly to report a suspected outage'
     ],
     ans: 1,
-    exp: "Check Assure to see if there is a visible network issue. Network problems need to be escalated — they are beyond Level 1 scope. Document what you see in Assure when escalating."
+    exp: "Check Assure for a visible network issue first. Network problems need to be escalated — document what you see in Assure when you raise it."
   },
   {
     cat: 'Assure', diff: 'Medium',
     q: "You can see in Assure that a student has been visiting inappropriate websites. What do you do?",
     opts: [
-      'Block the student\'s internet access yourself in Assure',
-      'Do not take action yourself — document what you saw and escalate to the relevant staff member',
-      'Confiscate the student\'s iPad immediately',
-      'Ignore it as it is not an IT issue'
+      'Block the student\'s internet access yourself in Assure straight away',
+      'Document exactly what you saw and escalate to the appropriate staff member — do not act yourself',
+      'Confiscate the student\'s iPad on the spot and take it straight to the principal',
+      'Monitor the situation for a few more days before raising it with anyone'
     ],
     ans: 1,
-    exp: "Viewing inappropriate content is a pastoral and policy matter. Document exactly what you observed and escalate to the appropriate staff member — do not take action yourself."
+    exp: "This is a pastoral and policy matter. Document what you observed and escalate to the appropriate staff member — do not make changes in Assure yourself."
   },
 
   /* ═══ APPLE CLASSROOM (5) ═══ */
   {
     cat: 'Apple Classroom', diff: 'Easy',
-    q: "Which year groups have Apple Classroom set up on their iPads at this organisation?",
-    opts: ['Year 7–12', 'Year 2–4', 'All year groups', 'Only Year 12'],
+    q: "Which year groups have Apple Classroom set up on their iPads?",
+    opts: [
+      'All year groups from Year 1 through to Year 12',
+      'Year 2 through Year 4 only',
+      'Year 7 through Year 10 only',
+      'Year 11 and Year 12 students only'
+    ],
     ans: 1,
     exp: "Apple Classroom is deployed on iPads for students in Year 2 through Year 4 at this organisation."
   },
   {
     cat: 'Apple Classroom', diff: 'Easy',
     q: "What devices do students use at this organisation?",
-    opts: ['MacBooks and iPads', 'iPads only', 'Windows laptops only', 'Chromebooks'],
+    opts: [
+      'MacBooks for senior students and iPads for junior students',
+      'iPads only — there are no student MacBooks',
+      'Windows laptops for most students with iPads used in the junior years',
+      'Chromebooks for all students with shared iPads available for class use'
+    ],
     ans: 1,
-    exp: "Students at this organisation use iPads only — there are no student MacBooks."
+    exp: "Students at this organisation use iPads only — there are no student MacBooks in use."
   },
   {
     cat: 'Apple Classroom', diff: 'Easy',
     q: "A teacher cannot see student iPads in Apple Classroom. What is the most common cause?",
     opts: [
-      'The iPads need to be updated',
-      'The teacher and students are not on the same Wi-Fi network, or Bluetooth is disabled on one of the devices',
-      'Apple Classroom needs to be reinstalled',
-      'The students have not logged into SEQTA'
+      'The student iPads all need to be updated to the latest version of iPadOS',
+      'The teacher\'s device and student iPads are not on the same Wi-Fi network, or Bluetooth is off on one of the devices',
+      'Apple Classroom needs to be deleted and reinstalled on the teacher\'s device',
+      'The students have not logged into SEQTA Learn yet that morning'
     ],
     ans: 1,
-    exp: "Apple Classroom requires the teacher's device and student iPads to be on the same Wi-Fi network with Bluetooth enabled. If either differs, students won't appear."
+    exp: "Apple Classroom requires all devices to be on the same Wi-Fi network with Bluetooth enabled. If either condition is not met, students will not appear."
   },
   {
     cat: 'Apple Classroom', diff: 'Easy',
     q: "Why is AirDrop disabled on student iPads?",
     opts: [
-      'It drains the battery too fast',
-      'To prevent students from sharing inappropriate content or distracting each other during class',
-      'It conflicts with Apple Classroom',
-      'AirDrop does not work on school iPads'
+      'AirDrop significantly drains the battery compared to normal use',
+      'To stop students sharing inappropriate content or distracting each other in class',
+      'AirDrop causes crashes when Apple Classroom is also running on the device',
+      'The model of iPads the school uses does not support AirDrop at all'
     ],
     ans: 1,
     exp: "AirDrop is disabled via MDM to prevent students from sharing distracting or inappropriate content during class time."
@@ -446,13 +471,13 @@ const QUESTION_POOL = [
     cat: 'Apple Classroom', diff: 'Easy',
     q: "A student cannot install an app on their school iPad. What is the most likely reason?",
     opts: [
-      'The App Store is offline',
-      'App installations on school iPads are managed by IT through JAMF — students cannot install unapproved apps',
-      'The iPad needs a software update',
-      'The student does not have an Apple ID'
+      'The App Store servers are currently offline for scheduled maintenance',
+      'App installations are managed by IT through JAMF — students cannot install unapproved apps themselves',
+      'The iPad needs to be updated to the latest iPadOS before any new apps can be installed',
+      'The student\'s Apple ID account has not been verified with a phone number yet'
     ],
     ans: 1,
-    exp: "School iPads are managed via JAMF. Apps are approved and pushed by IT — students cannot install apps themselves. If a new app is needed, it must go through IT."
+    exp: "School iPads are managed via JAMF. Apps are approved and pushed by IT — students cannot install apps themselves without IT involvement."
   },
 
   /* ═══ JAMF (4) ═══ */
@@ -460,68 +485,73 @@ const QUESTION_POOL = [
     cat: 'JAMF', diff: 'Easy',
     q: "What is JAMF used for at this organisation?",
     opts: [
-      'Managing staff Office 365 accounts',
-      'Managing and configuring school iPads — including deploying apps, updating device records, and assigning asset information',
-      'Monitoring the school network',
-      'Managing door access cards'
+      'Managing staff Office 365 accounts and assigning email licences',
+      'Managing school iPads — deploying apps, settings, and keeping device records accurate',
+      'Monitoring the school network and filtering student internet access',
+      'Managing staff door access cards and Integriti permission groups'
     ],
     ans: 1,
-    exp: "JAMF is the Mobile Device Management (MDM) system used to manage school iPads. IT use it to deploy apps, manage settings, and maintain device asset records."
+    exp: "JAMF is the MDM platform used to manage school iPads. IT use it to deploy apps, manage settings, and maintain accurate device asset records."
   },
   {
     cat: 'JAMF', diff: 'Easy',
-    q: "A student has been given a different iPad. How do you update the asset record in JAMF?",
+    q: "A student has been assigned a different iPad. How do you update the record in JAMF?",
     opts: [
-      'You cannot change asset records in JAMF',
-      'Find the device in JAMF Pro, open the device record, and update the asset tag and assigned user details',
-      'Delete the old device record and create a new one',
-      'Update the asset tag in Active Directory'
+      'Delete the old device record entirely and create a brand new one from scratch',
+      'Find the device in JAMF Pro, open the record, and update the asset tag and assigned user',
+      'Update the student\'s name in Active Directory and wait for the change to sync into JAMF',
+      'Wipe and re-enrol the iPad from scratch so it automatically picks up the new user'
     ],
     ans: 1,
-    exp: "In JAMF Pro, find the device record, open it, and update the asset tag and assigned user information. This keeps the device inventory accurate."
+    exp: "In JAMF Pro, find the device record, open it, and update the asset tag and assigned user. This keeps the inventory accurate without needing to wipe the device."
   },
   {
     cat: 'JAMF', diff: 'Easy',
-    q: "What information should be kept up to date in a device's JAMF record?",
+    q: "What information should always be kept up to date in a device\'s JAMF record?",
     opts: [
-      'The device colour and screen size',
-      'The asset tag and the user the device is assigned to',
-      'The Wi-Fi password',
-      'The student\'s SEQTA login'
+      'The device\'s screen size, colour, and available storage capacity',
+      'The asset tag and the user the device is currently assigned to',
+      'The Wi-Fi network name and password the device is connected to',
+      'The student\'s SEQTA login details and current class timetable'
     ],
     ans: 1,
-    exp: "The asset tag and assigned user should always be kept current in JAMF. This ensures the device can be tracked and the right person contacted if there is an issue."
+    exp: "The asset tag and assigned user should always be current in JAMF so devices can be tracked and the right person contacted if there is an issue."
   },
   {
     cat: 'JAMF', diff: 'Medium',
-    q: "A student's iPad is showing as enrolled in JAMF but IT cannot push apps to it. What is the most likely cause?",
+    q: "IT cannot push apps to a student\'s iPad even though it shows as enrolled in JAMF. What is most likely wrong?",
     opts: [
-      'The iPad battery is too low',
-      'The device has not checked in with JAMF recently — it may be offline or the MDM profile may have been removed',
-      'The App Store is down',
-      'The student\'s AD account is locked'
+      'The student\'s Apple ID password needs to be reset before any new apps can be installed',
+      'The device has not checked in with JAMF recently or the MDM profile may have been removed',
+      'The App Store is blocked on the device by the current Assure content filter rules',
+      'The student\'s AD account has been disabled, which cuts off MDM communication'
     ],
     ans: 1,
-    exp: "If a device hasn't checked in recently or has lost its MDM profile, policies and apps won't reach it. Check the last check-in time in JAMF and whether the device shows as managed."
+    exp: "If a device has not checked in recently or has lost its MDM profile, policies and apps will not reach it. Check the last check-in time and whether the device still shows as managed."
   },
 
   /* ═══ SECURITY (7) ═══ */
   {
     cat: 'Security', diff: 'Easy',
-    q: "You are leaving your computer for a few minutes. What should you do first?",
+    q: "You are stepping away from your computer for a few minutes. What should you do first?",
     opts: [
-      'Leave it open — you\'ll be right back',
-      'Lock your computer using Win + L (Windows) or Control + Command + Q (Mac)',
-      'Turn the monitor off',
-      'Log out completely'
+      'Leave it open — you will only be gone for a moment so it does not matter',
+      'Lock your screen with Win + L (Windows) or Control + Command + Q (Mac)',
+      'Turn the monitor off so nobody walking past can see what is on screen',
+      'Close all your open windows and browser tabs before walking away'
     ],
     ans: 1,
-    exp: "Always lock your computer before stepping away — even for a moment. On Windows press Win + L. On Mac press Control + Command + Q. This prevents anyone from accessing your session."
+    exp: "Always lock your screen before stepping away — even briefly. Win + L on Windows, Control + Command + Q on Mac. This prevents anyone from accessing your session."
   },
   {
     cat: 'Security', diff: 'Easy',
     q: "What is the keyboard shortcut to lock a Windows computer?",
-    opts: ['Ctrl + Alt + Del then wait', 'Win + L', 'Ctrl + L', 'Alt + F4'],
+    opts: [
+      'Ctrl + Alt + Delete, then click the Lock option from the menu',
+      'Win + L',
+      'Ctrl + Shift + L',
+      'Alt + F4 and then confirm the prompt that appears'
+    ],
     ans: 1,
     exp: "Win + L instantly locks a Windows computer. Make this a habit every time you step away from your desk."
   },
@@ -529,34 +559,34 @@ const QUESTION_POOL = [
     cat: 'Security', diff: 'Easy',
     q: "A staff member receives an urgent email asking them to click a link and enter their M365 password. What should they do?",
     opts: [
-      'Click the link and enter their details — it looks official',
+      'Click the link and complete the steps — urgent IT emails should always be followed promptly',
       'Do not click the link — this is a phishing attack. Report it to IT immediately.',
-      'Forward it to colleagues to warn them',
-      'Reply to the sender asking if it is real'
+      'Forward the email to their colleagues so the whole team is aware of the urgent request',
+      'Reply to the sender and ask them to confirm it is legitimate before taking any action'
     ],
     ans: 1,
-    exp: "This is a phishing attack — urgency and credential requests are classic signs. Do not click links or enter credentials. Report suspicious emails to IT straight away."
+    exp: "This is phishing — urgency and credential requests are the classic signs. Never click suspicious links. Report to IT straight away."
   },
   {
     cat: 'Security', diff: 'Easy',
     q: "You find a USB drive left in a common area. What do you do?",
     opts: [
-      'Plug it into a PC to see who it belongs to',
-      'Hand it to lost property — never plug an unknown USB into a school device',
-      'Format it and reuse it',
-      'Leave it where you found it'
+      'Plug it into a school PC to look at the files and find out who it belongs to',
+      'Hand it to lost property and never plug an unknown USB into a school device',
+      'Format it and add it to the IT spares drawer for future use',
+      'Leave it exactly where it is in case the owner comes back to collect it'
     ],
     ans: 1,
-    exp: "Unknown USB drives can contain malware that runs automatically when plugged in. Never plug an unknown USB into a school device — hand it in to lost property."
+    exp: "Unknown USB drives can contain malware that runs automatically when plugged in. Never plug one into a school device — hand it to lost property."
   },
   {
     cat: 'Security', diff: 'Easy',
     q: "Why should staff use a different password for their school account than their personal accounts?",
     opts: [
-      'School policy says passwords must be different lengths',
+      'School password policy requires a minimum length that many personal sites do not enforce',
       'If a personal account is breached, attackers can use the same password to access school systems',
-      'Microsoft automatically blocks reused passwords',
-      'It makes the school account easier to remember'
+      'Microsoft automatically detects and blocks passwords that match those used on other websites',
+      'Reusing passwords only becomes a problem if the user has more than five accounts total'
     ],
     ans: 1,
     exp: "If a personal account is compromised and the password is the same as the school account, attackers can immediately access school systems. Always use unique passwords."
@@ -565,147 +595,147 @@ const QUESTION_POOL = [
     cat: 'Security', diff: 'Easy',
     q: "What does MFA (Multi-Factor Authentication) do?",
     opts: [
-      'It replaces your password with a PIN code',
-      'It adds a second step — like a phone notification or code — so a password alone is not enough to log in',
-      'It automatically changes your password every month',
-      'It blocks access from overseas countries'
+      'It fully replaces your password with a PIN that is sent to your registered phone',
+      'It adds a second verification step so a password alone is not enough to log in',
+      'It automatically resets your password every 30 days as a security precaution',
+      'It blocks any login attempt that originates from outside of Australia'
     ],
     ans: 1,
-    exp: "MFA requires a second verification step beyond just a password. Even if someone steals your password, they still cannot log in without the second factor (e.g. a phone approval)."
+    exp: "MFA adds a second step — like a phone notification — on top of your password. Even if someone has your password, they still cannot log in without that second factor."
   },
   {
     cat: 'Security', diff: 'Medium',
-    q: "A staff member has clicked a suspicious link in an email. What should happen next?",
+    q: "A staff member has accidentally clicked a link in a suspicious email. What should happen next?",
     opts: [
-      'Nothing — if nothing happened visually, it is probably fine',
-      'Report it to IT immediately, disconnect from the network, and do not use the device until IT has checked it',
-      'Restart the computer and keep working',
-      'Delete the email and hope for the best'
+      'Nothing needs to happen if the page that opened looked normal and nothing visibly downloaded',
+      'Report it to IT immediately, disconnect the device from the network, and do not use it until IT clears it',
+      'Restart the computer to clear any potential threat, then continue working as normal',
+      'Delete the email from the inbox and sent items folder so there is no record of it'
     ],
     ans: 1,
-    exp: "Clicking a malicious link can silently install malware or steal credentials. Report it immediately, disconnect from the network to prevent spread, and wait for IT to assess the device."
+    exp: "Clicking a malicious link can silently install malware. Report to IT immediately, disconnect from the network, and wait for IT to assess the device before using it again."
   },
 
   /* ═══ HARDWARE (10) ═══ */
   {
     cat: 'Hardware', diff: 'Easy',
-    q: "A staff member's laptop screen is cracked. What do you do?",
+    q: "A staff member\'s laptop screen is cracked. What do you do first?",
     opts: [
-      'Tell them to keep using it until it stops working',
-      'Check if the device is still under warranty — if it is, log a repair with Lenovo',
-      'Order a new laptop straight away without checking warranty',
-      'Replace the screen yourself'
+      'Order a replacement laptop straight away to minimise their downtime',
+      'Check if it is still under warranty — if so, log a repair with Lenovo',
+      'Replace the screen yourself using a spare panel from the IT cupboard',
+      'Tell them to keep using it until the screen stops working completely'
     ],
     ans: 1,
-    exp: "Always check the warranty status first. If the Lenovo ThinkPad is still in warranty, log a repair with Lenovo — repairs under warranty are covered and should always be the first step."
+    exp: "Always check warranty first. If the ThinkPad is under warranty, log a repair with Lenovo — warranty repairs are covered and should always be the first step."
   },
   {
     cat: 'Hardware', diff: 'Easy',
-    q: "A staff member's laptop will not turn on at all — no lights, no sound. What is your first step?",
+    q: "A staff member\'s laptop will not turn on — no lights, no sounds at all. What is your first step?",
     opts: [
-      'Send it for repair immediately',
-      'Check it is plugged in and charging, then hold the power button for 30 seconds to do a hard reset',
-      'Reinstall Windows',
-      'Replace the laptop battery'
+      'Log it with Lenovo for a repair straight away as it must be a hardware fault',
+      'Check it is properly plugged in and charging, then hold the power button for 30 seconds to hard reset',
+      'Boot from a USB drive and attempt to reinstall Windows on the device',
+      'Replace the internal battery as it has most likely failed completely'
     ],
     ans: 1,
-    exp: "First check the power cable is properly connected and the charger is working. Then do a hard reset by holding the power button for 30 seconds. This resolves many 'no power' faults before escalating."
+    exp: "Check the power cable is connected and working first, then do a hard reset by holding the power button for 30 seconds. This fixes many no-power faults before escalating."
   },
   {
     cat: 'Hardware', diff: 'Easy',
-    q: "A staff member says their monitor has no image — it is just a black screen. What do you check first?",
+    q: "A monitor has no image — just a black screen. What do you check first?",
     opts: [
-      'Replace the monitor',
-      'Check the monitor is turned on, the cable is firmly connected at both ends, and try a different cable or port',
-      'Reinstall the graphics driver',
-      'Replace the graphics card'
+      'Replace the monitor straight away using a spare unit from IT storage',
+      'Check the monitor is powered on, the cable is secure at both ends, and try a different cable or port',
+      'Reinstall the graphics driver from Device Manager inside Windows',
+      'Replace the graphics card as it is by far the most common cause of a blank screen'
     ],
     ans: 1,
-    exp: "A blank monitor is almost always a loose or faulty cable. Check the monitor power, check the display cable at both ends, and try swapping the cable or port before assuming hardware failure."
+    exp: "A blank screen is almost always a loose or faulty cable. Check the power, check the display cable at both ends, and try swapping cables or ports before assuming hardware failure."
   },
   {
     cat: 'Hardware', diff: 'Easy',
-    q: "A staff member spills water on their ThinkPad. What do you tell them to do immediately?",
+    q: "A staff member spills water on their ThinkPad. What do you tell them to do straight away?",
     opts: [
-      'Keep using it and let it dry out while running',
-      'Turn it off immediately, flip it upside down to drain, and do not turn it on for at least 24 hours',
-      'Use a hairdryer on high heat to dry it quickly',
-      'Restart it to see if it still works'
+      'Keep using it and let it dry out on its own while it is still running',
+      'Turn it off immediately, flip it upside down to drain, and do not power it on for at least 24 hours',
+      'Use a hairdryer on a low heat setting to speed up the drying process safely',
+      'Restart it immediately to check whether it is still functioning before it dries out'
     ],
     ans: 1,
-    exp: "Turn it off immediately — water and electricity cause short circuits. Flip it upside down to drain. Do not use heat and do not power it on for at least 24 hours."
+    exp: "Turn it off immediately to prevent short circuits. Flip upside down to drain. No heat, and do not power on for at least 24 hours."
   },
   {
     cat: 'Hardware', diff: 'Easy',
-    q: "A Lenovo ThinkPad shows 'Fan Error' when starting up and then shuts down. What is happening?",
+    q: "A ThinkPad shows 'Fan Error' on startup and shuts itself down. What is happening?",
     opts: [
-      'The hard drive is failing',
-      'The cooling fan is not working — the laptop is shutting down to protect itself from overheating',
-      'Windows needs to be reinstalled',
-      'The battery needs replacing'
+      'The internal hard drive is failing and needs to be replaced before data is lost',
+      'The cooling fan has stopped working — the laptop shuts down to protect itself from overheating',
+      'Windows has become corrupted and needs to be completely reinstalled from scratch',
+      'The laptop battery has swollen and is triggering an automatic safety shutdown'
     ],
     ans: 1,
-    exp: "'Fan Error' means the cooling fan was not detected spinning. The laptop shuts down to prevent the CPU from overheating and being damaged. Log it with Lenovo if under warranty."
+    exp: "'Fan Error' means the cooling fan was not detected spinning. The laptop shuts down to protect the CPU. Log with Lenovo if under warranty."
   },
   {
     cat: 'Hardware', diff: 'Easy',
-    q: "A student's iPad screen is cracked but it still works. What do you do?",
+    q: "A student\'s iPad screen is cracked but it still works fine. What do you do?",
     opts: [
-      'Give the student a new iPad immediately',
-      'Document the damage, check if it is covered, and follow the repair or replacement process',
-      'Use sticky tape to hold it together',
-      'Ignore it — if it works it is fine'
+      'Issue a replacement iPad to the student immediately to avoid any further damage',
+      'Document the damage and follow the organisation\'s repair or replacement process',
+      'Apply a screen protector over the crack and let the student keep using it',
+      'Leave it as is — if it still works it does not need to be reported or actioned'
     ],
     ans: 1,
-    exp: "Document the damage and follow the organisation's process for iPad repairs or replacements. Do not ignore cracked screens — they can worsen and may be a safety hazard."
+    exp: "Document the damage and follow the correct process. Cracked screens can worsen and may become a safety hazard — do not ignore them."
   },
   {
     cat: 'Hardware', diff: 'Easy',
     q: "An iPad will not charge. What are the first two things to check?",
     opts: [
-      'Factory reset the iPad',
-      'Check the charging port for lint or debris, and test with a different known-working cable and charger',
-      'Update iOS',
-      'Replace the iPad immediately'
+      'Restore the iPad via Finder and update it to the latest available iPadOS version',
+      'Check the port for lint or debris and test with a different known-working cable and charger',
+      'Check the student\'s JAMF record to see if charging has been restricted by an MDM policy',
+      'Replace the iPad straight away — charging port faults are generally not repairable'
     ],
     ans: 1,
-    exp: "Debris in the Lightning/USB-C port is very common and prevents a proper connection. Always try a different cable and charger before assuming the iPad or port is faulty."
+    exp: "Debris in the charging port is very common. Always test with a different cable and charger before assuming the iPad itself is the problem."
   },
   {
     cat: 'Hardware', diff: 'Easy',
-    q: "A staff member's keyboard is not typing correctly — some keys are not working. What is a quick first check?",
+    q: "Some keys on a staff member\'s laptop keyboard are not working. What is a quick first check?",
     opts: [
-      'Replace the keyboard immediately',
-      'Try an external USB keyboard — if that works, the fault is with the built-in keyboard specifically',
-      'Reinstall Windows',
-      'Update the keyboard driver'
+      'Order a replacement keyboard unit straight away as built-in keyboards are not repairable',
+      'Plug in an external USB keyboard — if that works, the fault is with the built-in keyboard itself',
+      'Reinstall Windows as keyboard faults are almost always caused by software corruption',
+      'Update the keyboard driver in Device Manager and restart the laptop to apply it'
     ],
     ans: 1,
-    exp: "Plugging in an external keyboard tells you immediately whether it is a hardware fault with the built-in keyboard or a software/driver issue affecting all keyboards."
+    exp: "Testing with an external keyboard tells you immediately whether it is a hardware fault with the built-in keyboard or a software issue affecting all input."
   },
   {
     cat: 'Hardware', diff: 'Medium',
-    q: "A staff member's ThinkPad screen is flickering but an external monitor works fine. What does this tell you?",
+    q: "A ThinkPad's screen is flickering but an external monitor connected via USB-C works fine. What does this tell you?",
     opts: [
-      'The graphics card is faulty — replace it',
-      'The internal screen, display cable, or hinge connection has a fault. Since the external monitor works, the GPU is fine.',
-      'Windows needs reinstalling',
-      'The USB-C dock is causing the problem'
+      'The graphics card is faulty and needs replacing — external monitors rely on the same GPU',
+      'The fault is with the internal screen, display cable, or hinge — the GPU is fine since the external monitor works',
+      'Windows needs a clean reinstall as screen flickering is almost always caused by a software issue',
+      'The USB-C dock is interfering with the internal display driver and should be replaced'
     ],
     ans: 1,
-    exp: "If the external monitor is working, the GPU is fine. The fault is isolated to the internal display — the screen panel, the display cable, or the hinge connector. Log with Lenovo if under warranty."
+    exp: "If the external monitor works, the GPU is fine. The fault is in the internal display path — screen panel, display cable, or hinge. Log with Lenovo if under warranty."
   },
   {
     cat: 'Hardware', diff: 'Easy',
-    q: "A staff member says their computer is making a loud clicking sound from inside. What should you do?",
+    q: "A staff member\'s computer is making a loud clicking noise from inside. What do you do?",
     opts: [
-      'Tell them to ignore it',
-      'Take it seriously — a clicking sound often means a failing hard drive. Back up their data immediately and escalate.',
-      'Tell them to restart it',
-      'Update their drivers'
+      'Tell them to ignore it — computers often make unusual noises and it is usually nothing serious',
+      'Take it seriously — clicking often means a failing hard drive. Back up their data immediately and escalate.',
+      'Ask them to restart the computer — the clicking noise usually stops after a clean reboot',
+      'Run a driver update as clicking noises are typically caused by outdated or corrupt audio drivers'
     ],
     ans: 1,
-    exp: "A clicking or grinding noise from inside a computer is a warning sign of a failing hard drive. Back up data immediately before the drive fails, then arrange repair or replacement."
+    exp: "A clicking or grinding noise is a warning sign of a failing hard drive. Back up data immediately and escalate before the drive fails completely."
   }
 
 ];
