@@ -183,7 +183,7 @@ const QUESTION_POOL = [
       'Remove their Office 365 licence only'
     ],
     ans: 1,
-    exp: "Disable the account in ADUC by right-clicking the user and selecting Disable Account. This prevents login without deleting the account or its data."
+    exp: "Disable the account in AD by right-clicking the user and selecting Disable Account. This prevents login without deleting the account or its data."
   },
   {
     cat: 'Active Directory', diff: 'Medium',
@@ -207,7 +207,7 @@ const QUESTION_POOL = [
       'Storing the user\'s door access card number'
     ],
     ans: 1,
-    exp: "Extension attributes (extensionAttribute1–5) are custom fields in AD used to store extra information about a user — such as identifiers used by integrated systems like email routing or 3CX."
+    exp: "Extension attributes (extensionAttribute1–5) are custom fields in AD used to store extra information about a user — such as identifiers used by integrated systems like email routing."
   },
   {
     cat: 'Active Directory', diff: 'Medium',
